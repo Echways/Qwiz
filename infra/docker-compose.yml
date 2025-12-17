@@ -46,6 +46,12 @@ services:
       - ../hf_cache:/cache/huggingface
       - ../torch_cache:/cache/torch
       - ../torch_kernels:/cache/torch_kernels
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()\""]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+
 
   app:
     build: 
@@ -60,7 +66,7 @@ services:
       redis:
         condition: service_healthy
       neuralnet:
-        condition: service_started
+        condition: service_healthy
     command: >
       python main.py
 

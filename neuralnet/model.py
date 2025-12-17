@@ -108,3 +108,7 @@ async def neuralnet_model_endpoint(req: HintRequest) -> HintResponse:
         return HintResponse(hint=hint)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"model error: {e!s}")
+    
+@app.get("/health")
+def health():
+    return {"status": "ok"}
